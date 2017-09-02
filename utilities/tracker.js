@@ -169,7 +169,7 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                         console.log(e);
                     }
 
-                }, 10000);
+                }, 120000);
             }
         );
 
