@@ -13,5 +13,13 @@ module.exports = {
         password: '520965',
         database: 'snow', // 前面建的user表位于这个数据库中
         port: 3306
+    },
+
+    cloudSqlFromGAE: {
+        socketPath: '/cloudsql/snow-178422:us-west1:utilities-db',
+        user: 'root',
+        password: '520965',
+        database: 'snow' // 前面建的user表位于这个数据库中
+
     }
 };

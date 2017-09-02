@@ -16,9 +16,7 @@
     "morgan": "~1.8.1",
     "mysql": "^2.14.1",
     "serve-favicon": "~2.4.2",
-    "webworker-threads": "^0.7.13"
-  },
-  "devDependencies": {
+    "webworker-threads": "^0.7.13",
     "node-datetime": "^2.0.0",
     "request": "latest"
   }
