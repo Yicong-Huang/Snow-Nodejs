@@ -1,10 +1,6 @@
-var mysql = require('mysql');
-var $conf = require('../configs/db');
-var $util = require('../utilities/utilities');
-var $sql = require('../services/LocationService');
+var pool = require('../utilities/pool');
+var $sql = require('../dao/LocationsMapper');
 
-// 使用连接池，提升性能
-var pool  = mysql.createPool($util.extend({}, $conf.mysql));
 
 var jsonWrite = function (res, ret) {
     if(typeof ret === 'undefined') {
@@ -22,10 +18,21 @@ module.exports = {
     queryAll:function (req, res, next) {
         pool.getConnection(function(err, connection) {
             connection.query($sql.queryAll, function(err, result) {
-                jsonWrite(res, result);
+                console.log(err, result);
+                // jsonWrite(res, result);
                 connection.release();
             });
         });
 
+
+    },
+    add: function (locationInfo) {
+        pool.getConnection(function (err, connection) {
+
+            connection.query($sql.insert, locationInfo, function (err, result) {
+                console.log("err: ", +err);
+                connection.release();
+            });
+        });
     }
 }
