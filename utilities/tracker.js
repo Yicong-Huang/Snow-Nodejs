@@ -143,10 +143,11 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                                 var device;
 
                                 // Retrieve each device on the account
-                                body.content.forEach(function (d) {
-                                    if (d.deviceModel === 'iphone7plus-2-4-0')
-                                        device = d;
-                                });
+                                if (body)
+                                    body.content.forEach(function (d) {
+                                        if (d.deviceModel === 'iphone7plus-2-4-0')
+                                            device = d;
+                                    });
 
                                 if (device) {
                                     console.log("found");
