@@ -8,9 +8,9 @@ module.exports = {
     },
 
     cloudSql: {
-        host: '104.196.231.193',
+        host: 'utilities-db.coryhpm7bqn1.us-east-1.rds.amazonaws.com',
         user: 'root',
-        password: '520965',
+        password: '520965huang',
         database: 'snow', // 前面建的user表位于这个数据库中
         port: 3306
     },

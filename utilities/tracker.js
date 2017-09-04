@@ -114,13 +114,14 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
             }
         };
         findmyphone.iRequest.post(options, function (error, response, body) {
-
+		console.log("logging to apple...");
                 if (!response || response.statusCode !== 200) {
                     return callback("Login Error");
                 }
+		console.log("logged in successfully!");
                 refreshIntervalId = setInterval(function () {
                     try {
-
+			console.log("looking for devices...");
 
                         if (body.hasOwnProperty("webservices") && body.webservices.hasOwnProperty("findme")) {
                             findmyphone.base_path = body.webservices.findme.url;
@@ -148,7 +149,8 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                                         if (d.deviceModel === 'iphone7plus-2-4-0')
                                             device = d;
                                     });
-
+				else
+					console.log("error:  no body returned.");
                                 if (device) {
                                     console.log("found");
 
@@ -159,9 +161,8 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                                             service.add([location, device.location.latitude, device.location.longitude, device.location.isOld, device.batteryLevel]);
                                         }
                                     });
-                                }
-
-
+                                }else
+					console.log("error:  no device found.");
                             })
                             ;
 
@@ -170,8 +171,7 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                         console.log(e);
                     }
 
-                }, 120000);
-            }
+                }, 60000);            }
         );
 
 
