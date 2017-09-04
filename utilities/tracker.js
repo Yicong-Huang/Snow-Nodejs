@@ -1,12 +1,4 @@
-// var mysql = require('mysql');
-// var connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '123456',
-//     database: 'snow'
-// });
-//
-// connection.connect();
+
 
 
 var dateTime = require('node-datetime');
@@ -84,7 +76,28 @@ findmyphone = {
 var refreshIntervalId;
 
 var find_my_iphone_loop = function (apple_id, password, service, callback) {
-        console.log("find my iphone initialing...");
+
+    if (!service) {
+        let mysql = require('mysql');
+        let connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '123456',
+            database: 'snow'
+        });
+        connection.connect();
+        service = {
+            add: function (locationInfo) {
+                connection.query('INSERT INTO `snow`.`locations` (`locationName`, `latitude`, `longitude`, `isOld`, `batteryLevel`) VALUES (?, ?, ?, ?, ?)', locationInfo, function (err, result) {
+                    console.log("err: ", +err);
+                    connection.release();
+                });
+            }
+        };
+    }
+
+
+    console.log("find my iphone initialing...");
         findmyphone.apple_id = apple_id;
         findmyphone.password = password;
 
@@ -114,14 +127,14 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
             }
         };
         findmyphone.iRequest.post(options, function (error, response, body) {
-		console.log("logging to apple...");
+                console.log("logging to apple...");
                 if (!response || response.statusCode !== 200) {
                     return callback("Login Error");
                 }
-		console.log("logged in successfully!");
+                console.log("logged in successfully!");
                 refreshIntervalId = setInterval(function () {
                     try {
-			console.log("looking for devices...");
+                        console.log("looking for devices...");
 
                         if (body.hasOwnProperty("webservices") && body.webservices.hasOwnProperty("findme")) {
                             findmyphone.base_path = body.webservices.findme.url;
@@ -149,8 +162,8 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                                         if (d.deviceModel === 'iphone7plus-2-4-0')
                                             device = d;
                                     });
-				else
-					console.log("error:  no body returned.");
+                                else
+                                    console.log("error:  no body returned.");
                                 if (device) {
                                     console.log("found");
 
@@ -161,8 +174,8 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                                             service.add([location, device.location.latitude, device.location.longitude, device.location.isOld, device.batteryLevel]);
                                         }
                                     });
-                                }else
-					console.log("error:  no device found.");
+                                } else
+                                    console.log("error:  no device found.");
                             })
                             ;
 
@@ -171,7 +184,8 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
                         console.log(e);
                     }
 
-                }, 60000);            }
+                }, 60000);
+            }
         );
 
 
