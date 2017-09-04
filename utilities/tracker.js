@@ -1,8 +1,5 @@
-
-
-
-var dateTime = require('node-datetime');
-var dt = dateTime.create();
+let dateTime = require('node-datetime');
+let dt = dateTime.create();
 dt.format('m/d/Y H:M:S');
 
 var request = require("request");
@@ -195,5 +192,15 @@ var find_my_iphone_loop = function (apple_id, password, service, callback) {
 
 find_my_iphone_loop.findmyphone = findmyphone;
 
+if (!module.parent) {
+    // ran with `node something.js`
+    find_my_iphone_loop("hyc541978023@gmail.com", "520965Huang");
 
-module.exports = find_my_iphone_loop;
+} else {
+    // used with `require('/.something.js')`
+    module.exports = find_my_iphone_loop;
+}
+
+
+
+
